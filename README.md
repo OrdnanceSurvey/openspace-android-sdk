@@ -19,8 +19,6 @@ Available from <http://developer.android.com/sdk/index.html>. At a minimum, you 
 - Android support library V4
 - SDK tools (traceview, DDMS etc)
 
-![SDK Requirements](https://raw.github.com/OrdnanceSurvey/ordnancesurvey-android-sdk/master/android.sdk.requirements.png)
-
 __IDE__
 
 Two good options are available
