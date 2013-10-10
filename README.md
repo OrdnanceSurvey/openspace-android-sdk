@@ -8,10 +8,32 @@ This SDK is available as a static framework, see the [Getting started](#getting-
 View available mapping layers [here] (http://www.ordnancesurvey.co.uk/oswebsite/web-services/os-openspace/pro/products.html)
 
 
+![SimpleDemo-ScreenShot](https://github.com/OrdnanceSurvey/android-sdk-mapping-demo/raw/master/screenshot.png "Screenshot of basic demo app")
+
+
 #### Features and benefits
 
 Here are some of the features available
 
+- Native Android framework to incorporate Ordnance Survey mapping.
+- Select which products are displayed - see [products available](#product-codes).
+- Zoom and pan controls - native touch gesture recogonisers provide tap, pinch zoom control, etc.
+- Annotations - create and customise annotations.
+- Overlays - create and style polylines and polygons.
+- Offline tile storage - read [about offline tile packages](#offline-databases).
+- Places of interest geocoder - Search 1:50K Gazetteer, OS Locator and Codepoint Open datasets available either online or offline.
+- Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most Classes handle geometry in GridPoint and the sdk provides translation between both projections.
+- User location - openspace-android-sdk provides a wrapper around the standard location services to easily display your app's user location on the map and use the data.
+- Street level mapping features detailed buildings property boundaries and accurate road network.
+- World famous countryside and National park mapping featuring accurate tracks, paths and fields.
+
+Here are some of the benefits
+
+- Fully supported by Ordnance Survey – ongoing SDK upgrades, active user forum.
+- Online capability – fast rendering of Ordnance Survey maps.
+- Offline maps and search capability – as used in OS MapFinder™.
+- Fast rendering and smooth panning - for great user experience.
+- Complements our service – another way to get our data.
 
 Contents
 -------
@@ -32,7 +54,40 @@ Check out a demo project to get started:
 Getting started
 -------
 
-TODO - stuff about API keys
+### Commercial Use Registration and Access
+
+In order to access OS OpenSpace Pro for premium data you must apply for an API key, by registering for a free trial or commercial licence:-
+
+- A free 90 day trial licence (for internal trial and testing)
+- A free 90 day trial licence (for external trial and demonstrating)
+- A commercial re-use licence 
+
+see http://www.ordnancesurvey.co.uk/oswebsite/web-services/os-openspace/pro/free-trial.html or contact Newbusinessenquiries@ordnancesurvey.co.uk 
+
+### OS OpenSpace Registration and Access
+
+In order to access the service for public facing, non commercial applications with no financial gain you must apply for an API key, by signing up to an OS OpenSpace Developer Agreement:-
+
+#### NOTE: A free Daily Data Limit will apply. 
+#### NOTE: For online access only.
+
+See [OS Website](https://openspaceregister.ordnancesurvey.co.uk/osmapapi/register.do) to register.
+
+### For directly licenced customers (for example OS OnDemand). 
+
+Register for an OS OnDemand licence in order to obtain an API key to access the service. See [pricing](http://www.ordnancesurvey.co.uk/oswebsite/web-services/os-ondemand/pricing.html).
+
+###Authentication parameters
+
+When registering for an API key we'll to know the following:
+
+##### App ID (PackageName) of the application that will use the API key.
+
+Example: `uk.co.ordnancesurvey.android.myDemoApp`
+
+Let us know the package name in which you will be using the API key. This is available and configurable when creating an Android project or from `AndroidManifest.xml`.
+
+
 
 ### Offline databases
 
@@ -46,7 +101,7 @@ For more information please refer to specific documentation.
 
 ### Download framework package
 
-TODO
+TODO:
 
 
 ### Import into Android project
@@ -54,25 +109,92 @@ TODO
 TODO
 
 
-### Dependancies
+### Dependancies & requirements
 
-TODO
+* Android Support Library v4
+
+The openspace-android-sdk requires the Android Support Library v4 but does not include it, please provide an instance from your application.
+
+* OpenGL ES 2.0
+
+The openspace-android-sdk uses OpenGL ES 2.0 to render the map, please specify this feature in `AndroidManifest.xml` as below.
+
+```xml
+
+<!-- Use OpenGL ES 2.0 -->
+<uses-feature
+    android:glEsVersion="0x00020000"
+    android:required="true" />
+
+```
+
+* Permissions
+
+Depending on the features used, request the following permissions in `AndroidManifest.xml`.
+
+* `android.permission.INTERNET` is required when accessing online services.
+* `android.permission.ACCESS_NETWORK_STATE` is required to check whether data can be downloaded.
+* `android.permission.WRITE_EXTERNAL_STORAGE` is required to cache map tile images.
+* `android.permission.ACCESS_COARSE_LOCATION` and `android.permission.ACCESS_FINE_LOCATION` are required to receive accurate device location data.
 
 
-### Imports
+```xml
 
-TODO
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+```
 
 
 ### Displaying a map
 
-TODO
+The simplest method of displaying a map is to add a MapFragment to your activity, for example add the code below to the xml configuration for the activity.
+
+```xml
+
+<fragment
+    android:id="@+id/map_fragment"
+    class="uk.co.ordnancesurvey.android.maps.MapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+```
+
+The OSMap fragment cannot be initialised on its own and requries a TileSource in order to access content either online or offline.
+
+Open the respective Java class accomanying the activity xml and add a TileSource to the OSMap instance, in this example we create a new WebTileSource that accesses OS OpenSpace with an API key.
+
+```java
+
+
+//add to onCreate implementation
+
+android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+SupportMapFragment mf = (SupportMapFragment)fm.findFragmentById(R.id.map_fragment);
+
+OSMap mMap = mf.getMap();
+
+//create list of tileSources
+ArrayList<OSTileSource> sources = new ArrayList<OSTileSource>();
+
+//create web tile source with API details
+sources.add( mMap.webTileSource( "API_KEY", true/false, null ) );
+mMap.setTileSources(sources);
+
+
+```
+
 
 ### Product Codes
 
 A developer can select which Ordnance Survey mapping products to use by  selecting on of three pre-configured map stacks or customising their app by passing the product codes as and array of strings.
 
 NOTE: Certain products and the Zoom map stack require a commercial licence.
+
+TODO: how do you do this?
 
 
 #### Full Product list
@@ -123,13 +245,7 @@ TODO
 
 ### Versioning
 
-Ordnance Survey will provide and offically support the latest version of the SDK. 
-
-To return the version of SDK you are currently using as a string;
-
-```objective-c
-NSLog(@"You are currently using SDK Version: %@", [OSMapView SDKVersion]);
-```
+Ordnance Survey will provide and offically support the latest version of the SDK.
 
 
 API
