@@ -22,7 +22,7 @@ Here are some of the features available
 - Overlays - create and style polylines and polygons.
 - Offline tile storage - read [about offline tile packages](#offline-databases).
 - Places of interest geocoder - Search 1:50K Gazetteer, OS Locator and Codepoint Open datasets available either online or offline.
-- Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most Classes handle geometry in GridPoint and the sdk provides translation between both projections.
+- Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most Classes handle geometry as an OSGB GridPoint and the sdk provides translation between both projections.
 - User location - openspace-android-sdk provides a wrapper around the standard location services to easily display your app's user location on the map and use the data.
 - Street level mapping features detailed buildings property boundaries and accurate road network.
 - World famous countryside and National park mapping featuring accurate tracks, paths and fields.
@@ -165,15 +165,14 @@ The simplest method of displaying a map is to add a MapFragment to your activity
 
 The OSMap fragment cannot be initialised on its own and requries a TileSource in order to access content either online or offline.
 
-Open the respective Java class accomanying the activity xml and add a TileSource to the OSMap instance, in this example we create a new WebTileSource that accesses OS OpenSpace with an API key.
+Open the respective Java class accomanying the activity xml and add an `OSTileSource` to the OSMap instance, in this example we create a new WebTileSource that accesses the online OS OpenSpace service with an API key.
 
 ```java
 
 
 //add to onCreate implementation
 
-android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-SupportMapFragment mf = (SupportMapFragment)fm.findFragmentById(R.id.map_fragment);
+MapFragment mf = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
 
 OSMap mMap = mf.getMap();
 
@@ -251,7 +250,63 @@ Ordnance Survey will provide and offically support the latest version of the SDK
 API
 -------
 
-LOADS
+In this section we will run through some of the important components in the SDK. For more details please see the [reference documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) or any [demo app](#demo-projects) for full application usage.
+
+
+### OS Map (`OSMap` class)
+
+This is the main class to interact with the map, it provides access to configure and manipulate the map. You cannot instantiate this class, to access it call the `getMap()` method on the `MapFragment` or `MapView` depending on how you are using the SDK in your application.
+
+**NOTE:**
+
+* The `OSMap` class can only be read or modified from the main thread.
+* The `OSMap` must be configured with a tile source - see Tilesources below.
+* `OSMap` does not support drawing maps outside Great Britain.
+* The `OSMap` does not support other Map Types than the standard 2D map, however it does support rendering different Ordnance Survey products.
+
+**DEMO**
+
+See any of the [demo projects](#demo-projects) for working examples
+
+### OS MapFragment (`MapFragment` class)
+
+The `MapFragment` is a container for the OS Map, this is the simplest way of using the SDK in your application as it will initialise the Map and the view and handles the lifecycle requirements.
+
+Configure a MapFragment in an activity, for example add the code below to the xml configuration for the activity.
+
+**NOTE:**
+
+* Use `MapFragment` class if you are targetting API level 11 and above otherwise use the `SupportMapFragment` along with the Android support library.
+
+```xml
+
+<fragment
+    android:id="@+id/map_fragment"
+    class="uk.co.ordnancesurvey.android.maps.MapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+```
+
+Use the `getMap()` method on `MapFragment` to obtain instance of `OSMap`.
+
+
+```java
+
+MapFragment mf = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
+
+//obtain instance of OSMap from SupportMapFragment
+OSMap mMap = mf.getMap();
+
+//configure OSMap
+
+```
+
+### OS MapView (`MapView` class)
+
+TODO
+
+
 
 
 Issues
