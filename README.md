@@ -115,6 +115,8 @@ TODO
 
 The openspace-android-sdk requires the Android Support Library v4 but does not include it, please provide an instance from your application.
 
+TODO: if targetting >API 11 do you depend on this?
+
 * OpenGL ES 2.0
 
 The openspace-android-sdk uses OpenGL ES 2.0 to render the map, please specify this feature in `AndroidManifest.xml` as below.
@@ -276,7 +278,7 @@ Configure a MapFragment in an activity, for example add the code below to the xm
 
 **NOTE:**
 
-* Use `MapFragment` class if you are targetting API level 11 and above otherwise use the `SupportMapFragment` along with the Android support library.
+* Use `MapFragment` class if you are targeting API level 11 and above otherwise use the `SupportMapFragment` along with the Android support library.
 
 ```xml
 
@@ -298,14 +300,72 @@ MapFragment mf = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_f
 //obtain instance of OSMap from SupportMapFragment
 OSMap mMap = mf.getMap();
 
-//configure OSMap
+//configure OSMap...
 
 ```
 
-### OS MapView (`MapView` class)
+### OS SupportMapFragment (`SupportMapFragment` class)
 
-TODO
+The `SupportMapFragment` is again, as the `MapFragment` above but necessary if tageting below API level 11 along with the Android support library.
 
+
+**NOTE:**
+
+* To use `SupportMapFragment` you must provide the Android support library in your build path.
+
+
+```xml
+
+<fragment
+    android:id="@+id/map_fragment"
+    class="uk.co.ordnancesurvey.android.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    
+```
+
+Use the `getMap()` method on `MapFragment` to obtain instance of `OSMap`.
+
+
+```java
+
+android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
+SupportMapFragment mf = (SupportMapFragment)fm.findFragmentById(R.id.map_fragment);
+
+OSMap mMap = mf.getMap();
+
+//configure OSMap...
+
+```
+
+### Tilesources (`OSTileSource` class)
+
+The `OSMap` class requires atleast one online or offline tile source to render a map.
+
+The offline tilesources must be present on the file system in the form of `ostiles` packages. Using online tilesources requires an API key.
+
+```java
+
+//create a Collection to hold tile sources
+ArrayList<OSTileSource> sources = new ArrayList<OSTileSource>();
+
+// Load all ".ostiles" files from the SD card.
+sources.addAll(mMap.localTileSourcesInDirectory(this, Environment.getExternalStorageDirectory()));
+
+// Fall back to a web tile source.
+sources.add(mMap.webTileSource("API_KEY", false));
+
+// TODO: are these rendered in order in array???
+mMap.setTileSources(sources);
+
+
+```
+
+
+
+**NOTE:**
+
+* To configure product codes, see the [products available](#product-codes) section.
 
 
 
