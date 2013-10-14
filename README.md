@@ -476,6 +476,41 @@ List<? extends Placemark> placemarks = results.getPlacemarks()
 * The online access requires an API key configured
 * There are currently no reverse geocoding facilities
 
+### Geometry
+
+The SDK provides an implementation to translate between ubiquitous WGS84 coordinate system used in many systems include the GPS network and British National Grid.
+
+The SDK class `GridPoint` represents OSGB36 British National Grid easting/northing.
+
+Conversion between WGS84 and `GridPoint` can be performed with the SDK and the `MapProjection` class — applications should not perform unnecessary conversions. Coordinates should be stored in their source coordinate system in order to benefit from future accuracy improvements within the SDK. 
+
+Conversions can be performed via this SDK if required using the functions below;
+
+
+```java
+
+//grab the default MapProjection in use
+MapProjection mapProjection = MapProjection.getDefault();
+
+//convert my WGS84 lat, lng in decimal degress to a GridPoint object in OSGB36
+GridPoint gridPointFromLatLng = mapProjection.toGridPoint(50.937773, -1.470603);
+
+//create an array to hold returned 2D point, convert the OSGB36 GridPoint to WGS84(x, y)
+double[] latLng2d = new double[2];
+mapProjection.fromGridPoint(new GridPoint(437294, 115504), latLng2d);
+
+
+``` 
+
+The class `GridRect` exists as a representation of a rectangular region on the OS Map.
+
+```java
+
+GridRect su30GridSquare = new GridRect(430000, 100000, 440000, 110000);
+
+```
+
+
 
 
 
