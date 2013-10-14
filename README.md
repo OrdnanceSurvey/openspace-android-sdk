@@ -112,13 +112,13 @@ TODO
 
 ### Dependancies & requirements
 
-* Android Support Library v4
+##### Android Support Library v4
 
 The openspace-android-sdk requires the Android Support Library v4 but does not include it, please provide an instance from your application.
 
 TODO: if targetting >API 11 do you depend on this?
 
-* OpenGL ES 2.0
+##### OpenGL ES 2.0
 
 The openspace-android-sdk uses OpenGL ES 2.0 to render the map, please specify this feature in `AndroidManifest.xml` as below.
 
@@ -131,7 +131,7 @@ The openspace-android-sdk uses OpenGL ES 2.0 to render the map, please specify t
 
 ```
 
-* Permissions
+##### Permissions
 
 Depending on the features used, request the following permissions in `AndroidManifest.xml`.
 
@@ -445,8 +445,30 @@ Along with online search facility against the following datasets;
 * [1:50 000 Scale Gazetteer](http://www.ordnancesurvey.co.uk/oswebsite/products/50k-gazetteer/index.html) - Place names
 * [Code-Point Open](http://www.ordnancesurvey.co.uk/oswebsite/products/code-point-open/index.html) - Post codes
 
-The product to search is determined by passing a `Geocoder.GeocodeType` 
+The `Geocoder` can be created using either an offline database, online API key details or both; just pass in `null` for the parameters that are not used. For example, to create an online only `Geocoder` just pass in an API key.
 
+```java
+
+Geocoder geocoder = new Geocoder(null, "API_Key", true);
+
+```
+
+
+The product to search is determined by passing a `Geocoder.GeocodeType` into the `Geocoder.geocodeString(String s, GeocodeType geocodeType, GridRect boundingRect, int start, int numResults)` method. For simplicity you can use `Geocoder.GeocodeType.allOffline()` or `Geocoder.GeocodeType.allOnline()` or simply select a `Geocoder.GeocodeType` individually.
+
+Offline searches can be performed within an area by passing a `GridRect`, to search the entire country pass in `null`.
+
+The number of results can be limited by specifying the number (and offset) of results to return. This will be applied individually to each type of search. To return ALL results, set `numResults` to 0.
+
+The `Geocoder` returns a `Results` object that contains a list of `Placemark` as the matched resultset and a list of `GeocodeException` if any. For example, you may retrieve the list of matches as below;
+
+```java
+
+Results results = //perform Geocoder search
+
+List<? extends Placemark> placemarks = results.getPlacemarks()
+
+```
 
 **NOTE:**
 
