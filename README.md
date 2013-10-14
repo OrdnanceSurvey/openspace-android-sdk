@@ -24,6 +24,7 @@ Here are some of the features available
 - Places of interest geocoder - Search 1:50K Gazetteer, OS Locator and Codepoint Open datasets available either online or offline.
 - Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most Classes handle geometry as an OSGB GridPoint and the sdk provides translation between both projections.
 - User location - openspace-android-sdk provides a wrapper around the standard location services to easily display your app's user location on the map and use the data.
+- Use OpenGL for fast, smooth map rendering.
 - Street level mapping features detailed buildings property boundaries and accurate road network.
 - World famous countryside and National park mapping featuring accurate tracks, paths and fields.
 
@@ -252,7 +253,7 @@ Ordnance Survey will provide and offically support the latest version of the SDK
 API
 -------
 
-In this section we will run through some of the important components in the SDK. For more details please see the [reference documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) or any [demo app](#demo-projects) for full application usage.
+In this section we will run through some of the important components in the SDK. For more details please see the [reference documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) or any [demo app](#demo-projects) for full application usage. The API is largely similar to Google Maps Android V2 and as such much of the documentation can apply to this SDK.
 
 
 ### OS Map (`OSMap` class)
@@ -353,7 +354,7 @@ ArrayList<OSTileSource> sources = new ArrayList<OSTileSource>();
 sources.addAll(mMap.localTileSourcesInDirectory(this, Environment.getExternalStorageDirectory()));
 
 // Fall back to a web tile source.
-sources.add(mMap.webTileSource("API_KEY", false));
+sources.add(mMap.webTileSource("API_KEY", false, null));
 
 // TODO: are these rendered in order in array???
 mMap.setTileSources(sources);
@@ -362,10 +363,97 @@ mMap.setTileSources(sources);
 ```
 
 
-
 **NOTE:**
 
 * To configure product codes, see the [products available](#product-codes) section.
+
+
+### Markers (`Marker` class & `MarkerOptions` class)
+
+Markers identify single point locations on the map and can be interacted with in the form of touch events and info windows.
+
+To customise the `Marker` appearance and behaviour, the `addMarker` method accepts a configuration object `MarkerOptions`, use this class to alter how the marker behaves and users interact with it.
+
+
+Add a `Marker` to the map with options.
+
+```java
+
+OSMap mMap = //get OSMap instance
+
+Marker marker = mMap.addMarker(new MarkerOptions()
+            .gridPoint(new GridPoint(260899, 354314))
+            .title("Snowdon summit")
+            .snippet("Congratulations! If you make it to this point, you can always get the train down."));
+
+```
+
+
+It is possible to respond to touch events from markers, this interaction is done through the `OSMap` class by registering a listener for the callback you are interested in.
+
+To respond to a Marker click event, pass an `OnMarkerClickListener` to the `OSMap` using the `OSMap.setOnMarkerClickListener` method to receive a callback when a user clicks on a marker. Return a boolean to indicate if you have consumed the event and if you want to suppress the default action.
+
+The `OnMarkerDragListener` interface will allow you to receive callbacks for the events surrounding a marker being dragged, the `onMarkerDragStart`, `onMarkerDragEnd` and `onMarkerDrag` methods encapsulate the start, finish and during the drag event. To use an `OnMarkerDragListener` pass to the map using the `OSMap.setOnMarkerDragListener` method.
+
+It is possible to customise info windows by implementing an `InfoWindowAdapter` and using the `OSMap.setInfoWindowAdapter` to pass to the map. This `InfoWindowAdapter` can return a `android.view.View` for either the entire info window (`getInfoWindow`) or just the contents (`getInfoContents`).  To receive callbacks for when an info window is clicked, create an `OnInfoWindowClickListener` and pass to the map using the method `OSMap.setOnInfoWindowClickListener`.
+
+
+### Shapes
+
+The set of Shapes available allow a wide range of overlays to be applied to the map along with customisation.
+
+The pattern is similar to Markers above, customise the `*Options` object before creating the shape and adding to the map. Similarly the option object requires some geometry to specify the position and extent of the shape on the map.
+
+In the example below we create a square `Polygon` and style it.
+
+```java
+
+OSMap mMap = //get OSMap instance
+
+final GridPoint sw = new GridPoint(437200, 115450);
+
+PolygonOptions rectOptions = new PolygonOptions()
+        .add(sw,
+             new GridPoint(sw.x, sw.y + 200),
+             new GridPoint(sw.x + 200, sw.y + 200),
+             new GridPoint(sw.x + 200, sw.y))//no need to close the polygon
+        .strokeColor(Color.GREEN)
+        .fillColor(0x7F00FF00);
+
+Polygon polygon = mMap.addPolygon(rectOptions);
+
+```
+
+There are existing SDK classes for the following shapes, please see reference documentation for more details:
+
+* Polygon - without interior polygons
+* Polyline
+* Circle
+
+
+### Geocoding (`Geocoder` class)
+
+The `Geocoder` class provides offline search facility against the following datasets; 
+
+* [1:50 000 Scale Gazetteer](http://www.ordnancesurvey.co.uk/oswebsite/products/50k-gazetteer/index.html) - Place names
+* [Code-Point Open](http://www.ordnancesurvey.co.uk/oswebsite/products/code-point-open/index.html) - Post codes
+* [OS Locator](http://www.ordnancesurvey.co.uk/oswebsite/products/os-locator/index.html) - Road names
+* Grid Reference
+
+Along with online search facility against the following datasets; 
+
+* [1:50 000 Scale Gazetteer](http://www.ordnancesurvey.co.uk/oswebsite/products/50k-gazetteer/index.html) - Place names
+* [Code-Point Open](http://www.ordnancesurvey.co.uk/oswebsite/products/code-point-open/index.html) - Post codes
+
+The product to search is determined by passing a `Geocoder.GeocodeType` 
+
+
+**NOTE:**
+
+* The `Geocoder` class can work with an offline database - See [offline places of interest gazetteer database](https://github.com/OrdnanceSurvey/openspace-sdk-resources#places-of-interest-geocoder-database) 
+* The online access requires an API key configured
+* There are currently no reverse geocoding facilities
+
 
 
 
