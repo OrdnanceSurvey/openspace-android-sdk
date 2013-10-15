@@ -32,7 +32,7 @@ Here are some of the benefits
 
 - Fully supported by Ordnance Survey – ongoing SDK upgrades, active user forum.
 - Online capability – fast rendering of Ordnance Survey maps.
-- Offline maps and search capability – as used in OS MapFinder™.
+- Offline maps and search capability – as used in [OS MapFinder](https://play.google.com/store/apps/details?id=uk.co.ordnancesurvey.mobileapp.cola)&trade;.
 - Fast rendering and smooth panning - for great user experience.
 - Complements our service – another way to get our data.
 
@@ -86,7 +86,7 @@ When registering for an API key we'll to know the following:
 
 Example: `uk.co.ordnancesurvey.android.myDemoApp`
 
-Let us know the package name in which you will be using the API key. This is available and configurable when creating an Android project or from `AndroidManifest.xml`.
+Let us know the package name in which you will be using the API key. This is configurable when creating an Android project or available in the `AndroidManifest.xml` file.
 
 
 
@@ -102,12 +102,52 @@ For more information please refer to specific documentation.
 
 ### Download framework package
 
-TODO:
+Download the latest openspace-android-sdk package from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/oswebsite/web-services/os-openspace/android-sdk.html)
+
+Unzip the downloaded file to reveal the SDK `.jar` and then import into your project.
 
 
 ### Import into Android project
 
-TODO
+The openspace-android-sdk `.jar` can be imported into an Android project similar to any other library.
+
+For example, you can add the openspace-android-sdk to your project buildpath using your IDE.
+
+If you are using a build tool for your Android project such as Maven or Gradle the openspace-android-sdk can be added as a local dependancy.
+
+##### Gradle
+
+Add a openspace-android-sdk dependancy to the compile configuration with the library installed in the `libs` directory.
+
+```groovy
+
+dependencies {
+
+	//...
+	
+	// require openspace-android-sdk library
+    compile files('libs/osmapandroid-1.jar')
+
+}
+
+```
+
+##### Maven
+
+Use Maven system scope and systemPath to add a local dependancy to the openspace-android-sdk installed in the `libs` directory.
+
+```xml
+
+<dependency>
+	<groupId>uk.co.ordnancesurvey</groupId>
+	<artifactId>osmapandroid</artifactId>
+	<version>1.0.0</version>
+	<scope>system</scope>
+	<systemPath>${project.basedir}/libs/osmapandroid-1.jar</systemPath>
+</dependency>
+
+```
+
 
 
 ### Dependancies & requirements
@@ -116,7 +156,6 @@ TODO
 
 The openspace-android-sdk requires the Android Support Library v4 but does not include it, please provide an instance from your application.
 
-TODO: if targetting >API 11 do you depend on this?
 
 ##### OpenGL ES 2.0
 
@@ -162,7 +201,7 @@ The simplest method of displaying a map is to add a MapFragment to your activity
     android:id="@+id/map_fragment"
     class="uk.co.ordnancesurvey.android.maps.MapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" />
     
 ```
 
@@ -253,7 +292,7 @@ Ordnance Survey will provide and offically support the latest version of the SDK
 API
 -------
 
-In this section we will run through some of the important components in the SDK. For more details please see the [reference documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) or any [demo app](#demo-projects) for full application usage. The API is largely similar to Google Maps Android V2 and as such much of the documentation can apply to this SDK.
+In this section we will run through some of the important components in the SDK. For more details please see the [reference documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) or any [demo app](#demo-projects) for full application usage. The API is largely similar to Google Maps Android V2 and so much of the documentation can apply to this SDK.
 
 
 ### OS Map (`OSMap` class)
@@ -287,7 +326,7 @@ Configure a MapFragment in an activity, for example add the code below to the xm
     android:id="@+id/map_fragment"
     class="uk.co.ordnancesurvey.android.maps.MapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" />
     
 ```
 
@@ -312,7 +351,7 @@ The `SupportMapFragment` is again, as the `MapFragment` above but necessary if t
 
 **NOTE:**
 
-* To use `SupportMapFragment` you must provide the Android support library in your build path.
+* To use openspace-android-sdk you must provide the Android support library in your build path.
 
 
 ```xml
@@ -321,7 +360,7 @@ The `SupportMapFragment` is again, as the `MapFragment` above but necessary if t
     android:id="@+id/map_fragment"
     class="uk.co.ordnancesurvey.android.maps.SupportMapFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" />
     
 ```
 
@@ -347,6 +386,8 @@ The offline tilesources must be present on the file system in the form of `ostil
 
 ```java
 
+OSMap mMap = //get OSMap instance
+
 //create a Collection to hold tile sources
 ArrayList<OSTileSource> sources = new ArrayList<OSTileSource>();
 
@@ -356,7 +397,7 @@ sources.addAll(mMap.localTileSourcesInDirectory(this, Environment.getExternalSto
 // Fall back to a web tile source.
 sources.add(mMap.webTileSource("API_KEY", false, null));
 
-// TODO: are these rendered in order in array???
+//  Tile sources are consulted in the order they appear in the array
 mMap.setTileSources(sources);
 
 
@@ -368,7 +409,7 @@ mMap.setTileSources(sources);
 * To configure product codes, see the [products available](#product-codes) section.
 
 
-### Markers (`Marker` class & `MarkerOptions` class)
+### Markers (`Marker` & `MarkerOptions` classes)
 
 Markers identify single point locations on the map and can be interacted with in the form of touch events and info windows.
 
@@ -416,7 +457,7 @@ PolygonOptions rectOptions = new PolygonOptions()
         .add(sw,
              new GridPoint(sw.x, sw.y + 200),
              new GridPoint(sw.x + 200, sw.y + 200),
-             new GridPoint(sw.x + 200, sw.y))//no need to close the polygon
+             new GridPoint(sw.x + 200, sw.y))
         .strokeColor(Color.GREEN)
         .fillColor(0x7F00FF00);
 
