@@ -115,6 +115,8 @@ For example, you can add the openspace-android-sdk to your project buildpath usi
 
 If you are using a build tool for your Android project such as Maven or Gradle the openspace-android-sdk can be added as a local dependancy.
 
+The openspace-android-sdk resides in the `uk.co.ordnancesurvey.android.maps` namespace.
+
 ##### Gradle
 
 Add a openspace-android-sdk dependancy to the compile configuration with the library installed in the `libs` directory.
@@ -147,7 +149,6 @@ Use Maven system scope and systemPath to add a local dependancy to the openspace
 </dependency>
 
 ```
-
 
 
 ### Dependancies & requirements
@@ -211,7 +212,6 @@ Open the respective Java class accomanying the activity xml and add an `OSTileSo
 
 ```java
 
-
 //add to onCreate implementation
 
 MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
@@ -224,7 +224,6 @@ ArrayList<OSTileSource> sources = new ArrayList<OSTileSource>();
 //create web tile source with API details
 sources.add( mMap.webTileSource( "API_KEY", true/false, null ) );
 mMap.setTileSources(sources);
-
 
 ```
 
