@@ -175,9 +175,9 @@ Open the respective Java class accomanying the activity xml and add an `OSTileSo
 
 //add to onCreate implementation
 
-MapFragment mf = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
+MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
 
-OSMap mMap = mf.getMap();
+OSMap mMap = mapFragment.getMap();
 
 //create list of tileSources
 ArrayList<OSTileSource> sources = new ArrayList<OSTileSource>();
@@ -296,10 +296,10 @@ Use the `getMap()` method on `MapFragment` to obtain instance of `OSMap`.
 
 ```java
 
-MapFragment mf = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
+MapFragment mapFragment = ((MapFragment) getFragmentManager().findFragmentById(R.id.map_fragment));
 
 //obtain instance of OSMap from SupportMapFragment
-OSMap mMap = mf.getMap();
+OSMap mMap = mapFragment.getMap();
 
 //configure OSMap...
 
@@ -330,10 +330,10 @@ Use the `getMap()` method on `MapFragment` to obtain instance of `OSMap`.
 
 ```java
 
-android.support.v4.app.FragmentManager fm = getSupportFragmentManager();
-SupportMapFragment mf = (SupportMapFragment)fm.findFragmentById(R.id.map_fragment);
+android.support.v4.app.FragmentManager fragmentMgr = getSupportFragmentManager();
+SupportMapFragment mapFragment = (SupportMapFragment) fragmentMgr.findFragmentById(R.id.map_fragment);
 
-OSMap mMap = mf.getMap();
+OSMap mMap = mapFragment.getMap();
 
 //configure OSMap...
 
@@ -495,7 +495,7 @@ MapProjection mapProjection = MapProjection.getDefault();
 //convert my WGS84 lat, lng in decimal degress to a GridPoint object in OSGB36
 GridPoint gridPointFromLatLng = mapProjection.toGridPoint(50.937773, -1.470603);
 
-//create an array to hold returned 2D point, convert the OSGB36 GridPoint to WGS84(x, y)
+//create an array to hold the returned 2D point; convert the OSGB36 GridPoint to WGS84(x, y)
 double[] latLng2d = new double[2];
 mapProjection.fromGridPoint(new GridPoint(437294, 115504), latLng2d);
 
@@ -510,6 +510,50 @@ GridRect su30GridSquare = new GridRect(430000, 100000, 440000, 110000);
 
 ```
 
+**NOTE:**
+
+* The Google Maps API class `LatLng` is not used in this SDK.
+
+### User location
+
+The SDK provides a wrapper around standard Location services API to allow your application to display the device location easily.
+
+When enabled, a distinct annotation will be added to the map complete with estimated GPS accuracy display in the form of a circle around the annotation, a large circle represents a low accuracy and large margin of error in determining the device location.
+
+
+To start or stop receiving updates, calling the `mMap.setMyLocationEnabled` method:
+
+```java
+
+OSMap mMap = //get OSMap instance
+
+mMap.setMyLocationEnabled(true);
+
+```
+
+Now you can access the current location of the device or pass an `OnMyLocationChangeListener` to the SDK to receive updates when the location changes using the `OSMap.setOnMyLocationChangeListener` method.
+
+
+```java
+
+OSMap mMap = //get OSMap instance
+
+GridPoint myGridPoint = mMap.getMyGridPoint();
+
+Location myLocation = mMap.getMyLocation();
+
+```
+
+**NOTE:**
+
+* To enable this you must specify the correct permissions in the `AndroidManifest.xml` as below.
+
+```xml
+
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+```
 
 
 
