@@ -39,7 +39,7 @@ Here are some of the benefits
 Contents
 -------
 
-The openspace-ios-sdk comprises of a couple of items:
+The openspace-android-sdk comprises of a couple of items:
 
 1. The openspace-android-sdk framework is downloaded from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/oswebsite/web-services/os-openspace/android-sdk.html) 
 2. [Documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) - The documentation for the latest version of openspace-android-sdk in javadoc format
@@ -200,7 +200,7 @@ The simplest method of displaying a map is to add a MapFragment to your activity
 
 <fragment
     android:id="@+id/map_fragment"
-    class="uk.co.ordnancesurvey.android.maps.MapFragment"
+    android:name="uk.co.ordnancesurvey.android.maps.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
     
@@ -281,7 +281,27 @@ TODO: how do you do this?
 
 ### Converting Google Maps
 
-TODO
+The openspace-android-sdk has a largely similar API to Google Maps API v2 and so an existing project can be converted to use Ordnance Survey mapping easily.
+
+1) Replace any layout XML elements with openspace-android-sdk equivalent namespace.
+
+For example replace `com.google.android.gms.maps.MapFragment` with `uk.co.ordnancesurvey.android.maps.MapFragment`.
+
+2) Replace instances of Google Maps specific references to classes.
+
+For example replace instances of `GoogleMap` with `OSMap`.
+
+3) Complete initialisation of `OSMap` by supply a `OSTileSource` pointing to an offline or online with API Key source.
+
+4) Replace or translate any vector instances with openspace-android-sdk equivalent.
+
+For example a `LatLng` can be converted to a `GridPoint`.
+
+**NOTE:**
+
+* Depending on the complexity of your application there may be further steps necessary to convert an existing project to openspace-android-sdk
+* License terms and conditions applied to some data sources and services may prohibit display on other mapping frameworks than Google Maps. Please refer to terms and conditions for further details. 
+
 
 ### Versioning
 
@@ -323,7 +343,7 @@ Configure a MapFragment in an activity, for example add the code below to the xm
 
 <fragment
     android:id="@+id/map_fragment"
-    class="uk.co.ordnancesurvey.android.maps.MapFragment"
+    android:name="uk.co.ordnancesurvey.android.maps.MapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
     
@@ -357,7 +377,7 @@ The `SupportMapFragment` is again, as the `MapFragment` above but necessary if t
 
 <fragment
     android:id="@+id/map_fragment"
-    class="uk.co.ordnancesurvey.android.maps.SupportMapFragment"
+    android:name="uk.co.ordnancesurvey.android.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent" />
     
