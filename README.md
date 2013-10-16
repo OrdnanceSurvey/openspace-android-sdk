@@ -250,7 +250,7 @@ String[] freeProductsWithVmd = new String[] { "SV","SVR", "VMD", "VMDR","50K","5
 
 OSMapOptions options = new OSMapOptions().products(freeProductsWithVmd);
 
-SupportMapFragment mapFragment = new SupportMapFragment(options);
+MapFragment mapFragment = new MapFragment(options);
 
 ```
 
@@ -544,7 +544,9 @@ The `Geocoder` can be created using either an offline database, online API key d
 
 ```java
 
-Geocoder geocoder = new Geocoder(null, "API_Key", true);
+File poiDatabase = //get reference to .ospoi database
+
+Geocoder geocoder = new Geocoder(poiDatabase, "API_Key", getApplicationContext(), false);
 
 ```
 
