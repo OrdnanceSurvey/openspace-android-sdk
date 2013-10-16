@@ -41,7 +41,7 @@ Contents
 
 The openspace-android-sdk comprises of a couple of items:
 
-1. The openspace-android-sdk framework is downloaded from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/oswebsite/web-services/os-openspace/android-sdk.html) 
+1. The openspace-android-sdk framework is downloaded from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/business-and-government/products/os-openspace/android-sdk.html) 
 2. [Documentation](http://ordnancesurvey.github.io/openspace-android-sdk/) - The documentation for the latest version of openspace-android-sdk in javadoc format
 
 
@@ -102,7 +102,7 @@ For more information please refer to specific documentation.
 
 ### Download framework package
 
-Download the latest openspace-android-sdk package from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/oswebsite/web-services/os-openspace/android-sdk.html)
+Download the latest openspace-android-sdk package from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/business-and-government/products/os-openspace/android-sdk.html)
 
 Unzip the downloaded file to reveal the SDK `.jar` and then import into your project.
 
