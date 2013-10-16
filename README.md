@@ -283,17 +283,17 @@ TODO: how do you do this?
 
 The openspace-android-sdk has a largely similar API to Google Maps API v2 and so an existing project can be converted to use Ordnance Survey mapping easily.
 
-1) Replace any layout XML elements with openspace-android-sdk equivalent namespace.
+1) Replace any layout XML elements with the openspace-android-sdk equivalent namespace.
 
 For example replace `com.google.android.gms.maps.MapFragment` with `uk.co.ordnancesurvey.android.maps.MapFragment`.
 
-2) Replace instances of Google Maps specific references to classes.
+2) Replace any instances of Google Maps API classes with the openspace-android-sdk equivalent classes.
 
 For example replace instances of `GoogleMap` with `OSMap`.
 
-3) Complete initialisation of `OSMap` by supply a `OSTileSource` pointing to an offline or online with API Key source.
+3) Complete initialisation of `OSMap` by supplying a `OSTileSource` pointing to an offline or online with API Key tile source.
 
-4) Replace or translate any vector instances with openspace-android-sdk equivalent.
+4) Replace or translate any Google Maps API vector instances with the openspace-android-sdk equivalent.
 
 For example a `LatLng` can be converted to a `GridPoint`.
 
