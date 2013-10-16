@@ -208,7 +208,7 @@ The simplest method of displaying a map is to add a MapFragment to your activity
 
 The OSMap fragment cannot be initialised on its own and requries a TileSource in order to access content either online or offline.
 
-Open the respective Java class accomanying the activity xml and add an `OSTileSource` to the OSMap instance, in this example we create a new WebTileSource that accesses the online OS OpenSpace service with an API key.
+Open the respective Java class accompanying the activity xml and add an `OSTileSource` to the OSMap instance, in this example we create a new WebTileSource that accesses the online OS OpenSpace service with an API key.
 
 ```java
 
