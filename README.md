@@ -230,11 +230,46 @@ mMap.setTileSources(sources);
 
 ### Product Codes
 
-A developer can select which Ordnance Survey mapping products to use by  selecting on of three pre-configured map stacks or customising their app by passing the product codes as and array of strings.
+A developer can select which Ordnance Survey mapping products to use by  selecting customising their app by passing the product codes as and array of strings.
 
-NOTE: Certain products and the Zoom map stack require a commercial licence.
+By default the openspace-android-sdk will use the default set of products below.
 
-TODO: how do you do this?
+```java
+
+//default stack
+{"SV","SVR","50K","50KR","250K","250KR","MS","MSR","OV2","OV1","OV0"}
+
+```
+
+To customise the products in use, use the `OSMapOptions` class and pass an array of product codes when intantiating a `MapFragment` or `SupportMapFragment`.
+
+
+```java
+
+String[] freeProductsWithVmd = new String[] { "SV","SVR", "VMD", "VMDR","50K","50KR","250K","250KR","MS","MSR","OV2","OV1","OV0" };
+
+OSMapOptions options = new OSMapOptions().products(freeProductsWithVmd);
+
+SupportMapFragment mapFragment = new SupportMapFragment(options);
+
+```
+
+If you wish to restrict the products displayed per tile source then pass in this array of products when creating a tile source.
+
+```java
+
+OSMap mMap = //get OSMap instance
+
+String[] overviewMappingLayers = new String[] { "MS","MSR","OV2","OV1","OV0" };
+
+OSTileSource overviewMappingSource = mMap.webTileSource("API_KEY", false, overviewMappingLayers);
+
+```
+
+
+**NOTE:**
+
+* Certain products and the Zoom map stack require a commercial licence.
 
 
 #### Full Product list
