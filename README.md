@@ -331,7 +331,7 @@ See any of the [demo projects](#demo-projects) for working examples
 
 ### OS MapFragment (`MapFragment` class)
 
-The `MapFragment` is a container for the OS Map, this is the simplest way of using the SDK in your application as it will initialise the Map and the view and handles the lifecycle requirements.
+The `MapFragment` is a container for the `OSMap`, this is the simplest way of using the SDK in your application as it will initialise the Map and the view and handles the lifecycle requirements.
 
 Configure a MapFragment in an activity, for example add the code below to the xml configuration for the activity.
 
