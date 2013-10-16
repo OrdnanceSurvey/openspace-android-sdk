@@ -24,8 +24,8 @@ Here are some of the features available
 - Places of interest geocoder - Search 1:50K Gazetteer, OS Locator and Codepoint Open datasets available either online or offline.
 - Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most Classes handle geometry as an OSGB GridPoint and the sdk provides translation between both projections.
 - User location - openspace-android-sdk provides a wrapper around the standard location services to easily display your app's user location on the map and use the data.
-- Use OpenGL for fast, smooth map rendering.
-- Street level mapping features detailed buildings property boundaries and accurate road network.
+- Uses OpenGL for fast, smooth map rendering.
+- Street level mapping features detailed buildings, property boundaries and accurate road network.
 - World famous countryside and National park mapping featuring accurate tracks, paths and fields.
 
 Here are some of the benefits
