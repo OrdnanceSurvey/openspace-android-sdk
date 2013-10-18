@@ -92,7 +92,7 @@ Let us know the package name in which you will be using the API key. This is con
 
 ### Offline databases
 
-These offline databases are extensions to the openspace-android-sdk and can replace online access or supplement it, they can help your application overcome network coverage issues and continue to function wherever your customers are located. 
+These offline databases are extensions to the openspace-android-sdk and can replace online access or supplement it.  They can help your application overcome network coverage issues and continue to function wherever your customers are located. 
 
 For more information please refer to specific documentation.
 
