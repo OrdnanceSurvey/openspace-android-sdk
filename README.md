@@ -26,7 +26,7 @@ Here are some of the features available
 - User location - openspace-android-sdk provides a wrapper around the standard location services to easily display your app's user location on the map and use the data.
 - Uses OpenGL for fast, smooth map rendering.
 - Street level mapping features detailed buildings, property boundaries and accurate road network.
-- World famous countryside and National park mapping featuring accurate tracks, paths and fields.
+- World famous countryside and National Park mapping featuring accurate tracks, paths and fields.
 
 Here are some of the benefits
 
