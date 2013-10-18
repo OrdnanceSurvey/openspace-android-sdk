@@ -22,7 +22,7 @@ Here are some of the features available
 - Overlays - create and style polylines and polygons.
 - Offline tile storage - read [about offline tile packages](#offline-databases).
 - Places of interest geocoder - Search 1:50K Gazetteer, OS Locator and Codepoint Open datasets available either online or offline.
-- Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most Classes handle geometry as an OSGB GridPoint and the sdk provides translation between both projections.
+- Uses [OSGB36 British National Grid](http://www.ordnancesurvey.co.uk/oswebsite/support/the-national-grid.html) map projection - ordnancesurvey-android-sdk converts between WGS84 latitude/longitude and OSGB36 National Grid easting/northing. Most classes handle geometry as an OSGB GridPoint and the sdk provides translation between both projections.
 - User location - openspace-android-sdk provides a wrapper around the standard location services to easily display your app's user location on the map and use the data.
 - Uses OpenGL for fast, smooth map rendering.
 - Street level mapping features detailed buildings, property boundaries and accurate road network.
