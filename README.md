@@ -102,7 +102,7 @@ For more information please refer to specific documentation.
 
 ### Download framework package
 
-Download the latest openspace-android-sdk package from [www.ordnancesurvey.co.uk](https://www.ordnancesurvey.co.uk/business-and-government/products/os-openspace/android-sdk.html)
+The latest openspace-android-sdk package is available to [download](https://www.ordnancesurvey.co.uk/business-and-government/products/os-openspace/android-sdk.html) from Ordnance Survey.
 
 Unzip the downloaded file to reveal the SDK `.jar` and then import into your project.
 
