@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_shared_rules" default="debug">
+
+    <property name="antgen.dir" value="antgen"/>
+    <property name="antgen.absolute.dir" location="${antgen.dir}"/>
+
+    <!-- Set source.absolute.dir via a <path> in order to support multiple paths. -->
+    <!-- Note that actually using multiple sourcedirs breaks android_rules.-compile's <jar> task for library projects. -->
+    <property name="source.dir" value="src"/>
+    <path id="source.paths">
+        <pathelement path="${source.dir}"/>
+        <!--<pathelement path="${antgen.dir}"/>-->
+    </path>
+    <property name="source.absolute.dir" refid="source.paths" />
+
+    <echo message="${source.absolute.dir}"/>
+
+    <property name="java.compilerargs" value="-sourcepath ${antgen.absolute.dir}" />
+
+    <!--
+        We want to run copyLibs before android_rules.-build-setup sets the classpath. Options:
+          -setup: Guaranteed to run (since -build-setup depends on it), but might break.
+          -pre-build: Ordering dependent on the ordering in -compile, which we don't control.
+          -build-setup: Ordering dependent on an ordering we do control.
+    -->
+    <target name="-build-setup" depends="copyLibs,android_rules.-build-setup"/>
+
+    <target name="copyLibs" depends="-setup">
+        <!-- Note: This needs to happen before android_rules.-build-setup -->
+        <echo message="Copying JARs from &lt;SDK&gt;/extras/... to libs ..."/>
+        <copy file="${sdk.dir}/extras/android/support/v4/android-support-v4.jar" todir="libs/" />
+    </target>
+
+    <!--
+        We want to run customCodeGen after android_rules.-build_setup sets ${aapt}, but
+        before -code_gen runs AIDL if we write to something in source.absolute.dirs.
+        We currently don't due to other breakage.
+    -->
+    <target name="-code-gen" depends="customCodeGen,android_rules.-code-gen" />
+
+    <target name="customCodeGen" depends="android_rules.-build-setup">
+        <!-- Note: This needs to run before -code-gen if its output dir is in source.absolute.dirs (so the directory exists before aidl probes it) -->
+        <!-- This depends on -build-setup so it can get the value of ${aapt} -->
+        <echo message="Running customCodeGen.sh..."/>
+        <exec executable="sh">
+            <arg value="customCodeGen.sh" />
+            <arg value="--debug=${build.is.packaging.debug}" />
+            <env key="AAPT" value="${aapt}" />
+            <env key="CUSTOM_GEN_DIR" value="${antgen.absolute.dir}" />
+            <env key="ANT_OUT_DIR" value="${out.absolute.dir}" />
+        </exec>
+    </target>
+
+    <target name="clean" depends="android_rules.clean">
+        <!-- android_rules.clean deletes gen/, so we just have to clean up anything else -->
+        <delete file="libs/android-support-v4.jar" />
+        <delete dir="${antgen.dir}"/>
+    </target>
+
+    <target name="eclipse-setup" depends="-set-debug-mode, -build-setup, customCodeGen"/>
+</project>

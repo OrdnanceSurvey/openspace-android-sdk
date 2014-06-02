@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build_package" default="build">
+    <target name="build">
+        <fail message='"build" directory already exists. Try running clean first!'>
+            <condition>
+                <available file="build" type="dir"/>
+            </condition>
+        </fail>
+
+        <exec executable="ant">
+            <arg value="-Dout.dir=build/debug/bin" />
+            <arg value="-Dgen.dir=build/debug/gen"/>
+            <arg value="-Dantgen.dir=build/debug/antgen"/>
+            <arg value="debug"/>
+        </exec>
+        <exec executable="ant">
+            <arg value="-Dout.dir=build/release/bin" />
+            <arg value="-Dgen.dir=build/release/gen"/>
+            <arg value="-Dantgen.dir=build/release/antgen"/>
+            <arg value="-Dout.javadoc.dir=build/doc"/>
+            <arg value="release"/>
+            <arg value="javadoc"/>
+        </exec>
+
+        <!-- Rename the demo .project -->
+        <copy file="../AndroidMapDemo/.project" tofile="build/dot-project"/>
+        <replace file="build/dot-project" token="AndroidMapDemo" value="OSMapDemo"/>
+
+        <zip destfile="build/OSMapAndroid-Demo.zip" filesonly="true" level="9">
+            <zipfileset dir="../AndroidMapDemo"                   prefix="OSMapAndroid-Demo" excludes="**/OSMapAndroid.jar,**/.project"/>
+            <zipfileset file="build/dot-project"                  fullpath="OSMapAndroid-Demo/.project"/>
+            <zipfileset dir="build/doc"                           prefix="OSMapAndroid-Demo/OSMapAndroid-docs"/>
+            <zipfileset file="build/release/bin/OSMapAndroid.jar" prefix="OSMapAndroid-Demo/libs" />
+        </zip>
+
+        <zip destfile="build/OSMapAndroid-DebugInfo.zip" filesonly="true" level="9">
+            <zipfileset file="build/debug/bin/OSMapAndroid.jar"   fullpath="OSMapAndroid-DebugInfo/OSMapAndroid-debug.jar"/>
+            <zipfileset dir="build/debug/bin/proguard" prefix="OSMapAndroid-DebugInfo/OSMapAndroid-debug-proguard"/>
+            <zipfileset file="build/debug/bin/classes.jar" prefix="OSMapAndroid-DebugInfo/OSMapAndroid-debug-proguard"/>
+
+            <zipfileset file="build/release/bin/OSMapAndroid.jar"   fullpath="OSMapAndroid-DebugInfo/OSMapAndroid-release.jar"/>
+            <zipfileset dir="build/release/bin/proguard" prefix="OSMapAndroid-DebugInfo/OSMapAndroid-release-proguard"/>
+            <zipfileset file="build/release/bin/classes.jar" prefix="OSMapAndroid-DebugInfo/OSMapAndroid-release-proguard"/>
+        </zip>
+    </target>
+    <target name="clean">
+        <delete file="libs/android-support-v4.jar" />
+        <delete dir="build" />
+        <delete dir="${gen.absolute.dir}" verbose="${verbose}" />
+    </target>
+</project>
