@@ -53,7 +53,8 @@ public abstract class MapProjection {
 
 	/**
 	* Converts a GridPoint to the corresponding WGS84 latitude/longitude.
-	* Results are returned in a caller-provided array.
+	* Results are returned in a caller-provided array, where the first element
+	* contains the latitude and the second (double[1]) contains the longitude.
 	* Accuracy depends on the projection used.
 	* @param gp The GridPoint to convert.
 	* @param latLngOut Must be an array of length >= 2.
