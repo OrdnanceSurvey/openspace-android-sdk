@@ -395,13 +395,14 @@ public final class Marker {
 		if(infoBitmap != null)
 		{
 			// Draw centered above the marker
-			yPixels -= tex.height;
-			xPixels -= tex.width / 2;
 			tex = imageCache.bindTextureForBitmap(infoBitmap);
-			if(tex == null)
-			{
-				return;
-			}
+            if(tex == null)
+            {
+                return;
+            }
+
+			yPixels -= tex.height;
+			xPixels -= ((tex.width / 2) - (width * mAnchorU));
 
 			glUniform4f(program.uniformTintColor, -1, -1, -1, 1);
 
