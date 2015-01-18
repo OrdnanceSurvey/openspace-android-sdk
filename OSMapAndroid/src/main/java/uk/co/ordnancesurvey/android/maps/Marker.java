@@ -75,6 +75,8 @@ import android.graphics.Canvas;
  * <p>For more information, read the Markers developer guide.
  */
 public final class Marker {
+
+    private static final float ZERO_EQUALITY = 0.0001;
     private GridPoint mGridPoint;
     private final Bitmap mIconBitmap;
     private final float mIconTintR;
@@ -341,7 +343,7 @@ public final class Marker {
         float yPixels = (float) Math.rint(screenLocation.y + OFFSET);
 
         Matrix.translateM(mvpTempMatrix, 0, ortho, 0, xPixels, yPixels, 0);
-        if (mBearing != 0) {
+        if (mBearing > 0 && mBearing < ZERO_EQUALITY) {
             Matrix.rotateM(mvpTempMatrix, 0, mBearing, 0, 0, 1);
         }
 
@@ -360,7 +362,7 @@ public final class Marker {
         // Draw the info window if necessary
         Bitmap infoBitmap = mVolatileInfoBitmap;
         if (infoBitmap != null) {
-            if (mBearing != 0) {
+            if (mBearing > 0 && mBearing < ZERO_EQUALITY) {
                 Matrix.rotateM(mvpTempMatrix, 0, -mBearing, 0, 0, 1);
             }
 
